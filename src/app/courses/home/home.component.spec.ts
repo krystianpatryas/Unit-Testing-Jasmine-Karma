@@ -86,19 +86,22 @@ describe('HomeComponent', () => {
   });
 
 
-  it("should display advanced courses when tab clicked", () => {
+  it("should display advanced courses when tab clicked", fakeAsync((done: DoneFn) => {
 
     coursesService.findAllCourses.and.returnValue(of(setupCourses()));
     fixture.detectChanges();
 
     const tabs = el.queryAll(By.css('.mat-tab-label'));
-    const cardTitles = el.queryAll(By.css('.mat-card-title'));
+
     click(tabs[1]);
     fixture.detectChanges();
 
-    expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card titles')
-    expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course')
-  });
+    flush();
+    const cardTitles = el.queryAll(By.css('.mat-card-title'));
+    expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card titles');
+    expect(cardTitles[0].nativeElement.textContent).toContain('Angular Testing Course');
+
+  }));
 
 });
 
